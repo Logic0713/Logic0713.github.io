@@ -4,10 +4,10 @@ document.addEventListener('DOMContentLoaded', function () {
   let currentEncoding = defaultEncoding
   const targetEncodingCookie = 'translate-chn-cht'
   let targetEncoding =
-    btf.saveToLocal.get(targetEncodingCookie) === undefined
+    saveToLocal.get(targetEncodingCookie) === undefined
       ? defaultEncoding
-      : Number(btf.saveToLocal.get('translate-chn-cht'))
-  let translateButtonObject
+      : Number(saveToLocal.get('translate-chn-cht'))
+  let translateButtonObject, translateRightMenuButtonObject;
   const isSnackbar = snackbarData !== undefined
 
   function setLang () {
@@ -56,14 +56,14 @@ document.addEventListener('DOMContentLoaded', function () {
       currentEncoding = 1
       targetEncoding = 2
       translateButtonObject.textContent = msgToTraditionalChinese
-      isSnackbar && btf.snackbarShow(snackbarData.cht_to_chs)
+      isSnackbar && anzhiyu.snackbarShow(snackbarData.cht_to_chs)
     } else if (targetEncoding === 2) {
       currentEncoding = 2
       targetEncoding = 1
       translateButtonObject.textContent = msgToSimplifiedChinese
-      isSnackbar && btf.snackbarShow(snackbarData.chs_to_cht)
+      isSnackbar && anzhiyu.snackbarShow(snackbarData.chs_to_cht)
     }
-    btf.saveToLocal.set(targetEncodingCookie, targetEncoding, 2)
+    saveToLocal.set(targetEncodingCookie, targetEncoding, 2)
     setLang()
     translateBody()
   }
@@ -97,16 +97,24 @@ document.addEventListener('DOMContentLoaded', function () {
     return str
   }
 
-  function translateInitialization () {
-    translateButtonObject = document.getElementById('translateLink')
-    if (translateButtonObject) {
+  function translateInitialization() {
+    translateButtonObject = document.getElementById('translateLink');
+    translateRightMenuButtonObject = document.getElementById('menu-translate').querySelector('span');
+
+    if (translateButtonObject || translateRightMenuButtonObject) {
       if (currentEncoding !== targetEncoding) {
-        translateButtonObject.textContent =
-          targetEncoding === 1
-            ? msgToSimplifiedChinese
-            : msgToTraditionalChinese
-        setLang()
-        setTimeout(translateBody, translateDelay)
+        const textContent = targetEncoding === 1 ? msgToSimplifiedChinese : msgToTraditionalChinese;
+
+        if (translateButtonObject) {
+          translateButtonObject.textContent = textContent;
+        }
+  
+        if (translateRightMenuButtonObject) {
+          translateRightMenuButtonObject.textContent = textContent;
+        }
+  
+        setLang();
+        setTimeout(translateBody, translateDelay);
       }
     }
   }
@@ -114,10 +122,9 @@ document.addEventListener('DOMContentLoaded', function () {
   window.translateFn = {
     translatePage,
     Traditionalized,
-    Simplized,
-    translateInitialization
+    Simplized
   }
 
   translateInitialization()
-  btf.addGlobalFn('pjaxComplete', translateInitialization, 'translateInitialization')
+  document.addEventListener('pjax:complete', translateInitialization)
 })
