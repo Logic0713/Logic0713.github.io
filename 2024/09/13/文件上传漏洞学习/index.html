@@ -1,0 +1,602 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>文件上传漏洞学习 | 喵酱的异想世界</title><meta name="keywords" content="CTF"><meta name="author" content="Logic"><meta name="copyright" content="Logic"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f9fe"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="文件上传漏洞学习"><meta name="application-name" content="文件上传漏洞学习"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#f7f9fe"><meta property="og:type" content="article"><meta property="og:title" content="文件上传漏洞学习"><meta property="og:url" content="https://logic0713.github.io/2024/09/13/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/index.html"><meta property="og:site_name" content="喵酱的异想世界"><meta property="og:description" content="教程来源：https:&amp;#x2F;&amp;#x2F;blog.csdn.net&amp;#x2F;qq_43390703&amp;#x2F;article&amp;#x2F;details&amp;#x2F;104858705 ​                   https:&amp;#x2F;&amp;#x2F;cloud.tencent.com&amp;#x2F;developer&amp;#x2F;article&amp;#x2F;1938541 引言什么是文件上传 文件上"><meta property="og:locale" content="en"><meta property="og:image" content="https://tse4-mm.cn.bing.net/th/id/OIP-C.Fr9nRiu1t1xAkPysJWvDbgAAAA?w=206&amp;h=207&amp;c=7&amp;r=0&amp;o=5&amp;dpr=1.3&amp;pid=1.7"><meta property="article:author" content="Logic"><meta property="article:tag"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://tse4-mm.cn.bing.net/th/id/OIP-C.Fr9nRiu1t1xAkPysJWvDbgAAAA?w=206&amp;h=207&amp;c=7&amp;r=0&amp;o=5&amp;dpr=1.3&amp;pid=1.7"><meta name="description" content="教程来源：https:&amp;#x2F;&amp;#x2F;blog.csdn.net&amp;#x2F;qq_43390703&amp;#x2F;article&amp;#x2F;details&amp;#x2F;104858705 ​                   https:&amp;#x2F;&amp;#x2F;cloud.tencent.com&amp;#x2F;developer&amp;#x2F;article&amp;#x2F;1938541 引言什么是文件上传 文件上"><link rel="shortcut icon" href="../../../../favicon.ico"><link rel="canonical" href="https://logic0713.github.io/2024/09/13/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/"><link rel="preconnect" href="//cdn.cbd.int"/><meta name="google-site-verification" content="xxx"/><meta name="baidu-site-verification" content="code-xxx"/><meta name="msvalidate.01" content="xxx"/><link rel="stylesheet" href="../../../../css/index.css"><link rel="stylesheet" href="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  linkPageTop: undefined,
+  peoplecanvas: {"enable":true,"img":"https://upload-bbs.miyoushe.com/upload/2023/09/03/125766904/ee23df8517f3c3e3efc4145658269c06_5714860933110284659.png"},
+  postHeadAiDescription: {"enable":true,"gptName":"AnZhiYu","mode":"local","switchBtn":false,"btnLink":"https://afdian.net/item/886a79d4db6711eda42a52540025c377","randomNum":3,"basicWordCount":1000,"key":"xxxx","Referer":"https://xx.xx/"},
+  diytitle: {"enable":true,"leaveTitle":"w(ﾟДﾟ)w我要给你起个难听的绰号！","backTitle":"♪(^∇^*)最好的伙伴！"},
+  LA51: undefined,
+  greetingBox: undefined,
+  twikooEnvId: '',
+  commentBarrageConfig:undefined,
+  root: '/',
+  preloader: {"source":3},
+  friends_vue_info: undefined,
+  navMusic: true,
+  mainTone: undefined,
+  authorStatus: undefined,
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简","rightMenuMsgToTraditionalChinese":"转为繁体","rightMenuMsgToSimplifiedChinese":"转为简体"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":330},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    simplehomepage: true,
+    post: false
+  },
+  runtime: 'days',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: {"copy":true,"copyrightEbable":false,"limitCount":50,"languages":{"author":"Author: Logic","link":"Link: ","source":"Source: 喵酱的异想世界","info":"Copyright is owned by the author. For commercial reprints, please contact the author for authorization. For non-commercial reprints, please indicate the source.","copySuccess":"Copy success, copy and reprint please mark the address of this article"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"Traditional Chinese Activated Manually","cht_to_chs":"Simplified Chinese Activated Manually","day_to_night":"Dark Mode Activated Manually","night_to_day":"Light Mode Activated Manually","bgLight":"#425AEF","bgDark":"#1f1f1f","position":"top-center"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.min.js',
+      css: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  shortcutKey: undefined,
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  configTitle: '喵酱的异想世界',
+  title: '文件上传漏洞学习',
+  postAI: '',
+  pageFillDescription: '引言, 什么是文件上传, 什么是文件上传漏洞, 原理, 产生原因, 文件上传漏洞高危触发点, 一句话木马, 文件上传漏洞类型, 前端检测, 原理, 判断js验证方式, 绕过方法, 后端检测_后缀名检测漏洞, 原理, 黑名单, 绕过方法, 解析漏洞（后面会有稍微点的具体解释）, 截断上传, 大小写绕过, 黑名单扩展名的漏网之鱼, 利用Windows的命名机制, 双写绕过, 白名单, 原理, 绕过方法, 解析漏洞, 截断上传, 后端检测_00截断, 后端检测_MIME检测, MIME, 常见的MIME类型, 检测方式, MIME绕过的原理：, 后端检测_文件头检测漏洞, 漏洞原理, 图片马制作, 解析图片马, 解析漏洞, .htaccess文件解析漏洞, 前提, 原理, 文件内容, Apache解析漏洞, 原理, IIS6.0解析漏洞, IIS7.0 | IIS7.5 | Nginx的解析漏洞, 原理：, 条件竞争漏洞, 二次渲染漏洞, 1. 二次渲染原理：, 2. 绕过：, 3. 如何判断图片是否进行了二次处理？, ctfhub之文件上传, 无验证, 前端验证, .htaccess, MIME绕过, 00截断, 双写后缀, 文件头检查教程来源引言什么是文件上传文件上传就是通过流的方式将文件写到服务器上文件上传必须以提交表单表单中需要把字符串作为代码执行什么是文件上传漏洞文件上传漏洞是指由于程序员在对用户文件上传部分的控制不足或者处理缺陷而导致的用户可以越过其本身权限向什么是文件上传漏洞文件上传漏洞是指由于程序员在对用户文件上传部分的控制不足或者处理缺陷而导致的用户可以越过其本身权限向服务器上上传可执行的动态脚本文件这里上传的文件可以是木马病毒恶意脚本或者等文件上传本身没有问题有问题的是文件上传后服务器怎么处理解释文件如果服务器的处理逻辑做的不够安全则会导致严重的后果原因对于上传文件的后缀名扩展名没有做较为严格的限制对于上传文件的指文件中包含的数据类型由其扩展名来识别没有做检查权限上没有对于上传的文件目录设置不可执行权限尤其是对于类型的文件对于对于上传文件或者指定目录的行为没有做限制原理文件上传漏洞是指用户通过界面上的上传功能上传了一个可执行的脚本文件而端的系统并未对其进行检测或者检测的逻辑做的不够好通过来说文件上传功能是没有问题的主要是服务器如何对上传的文件如何进行处理若未对用户上传的文件进行有效的审查若存在恶意用户对其上传一句话木马从而实现控制网站的目的文件上传后导致的常见安全问题一般有上传文件是脚本语言服务器的容器解释并执行了用户上传的脚本导致代码执行上传文件是病毒木马文件黑客用以诱骗用户或者管理员下载执行上传文件是钓鱼图片或为包含了脚本的图片在某些版本的浏览器中会被作为脚本执行被用于钓鱼和欺诈产生原因对于上传文件的后缀名扩展名没有做较为严格的限制对于上传文件的指文件中包含的数据类型由其扩展名来识别没有做检查权限上没有对于上传的文件目录设置不可执行权限尤其是对于类型的文件对于对于上传文件或者指定目录的行为没有做限制文件上传漏洞高危触发点相册头像上传视频照片分享附件上传论坛发帖邮箱文件管理器任何存在文件上传功能的地方都有可能存在文件上传漏洞比如相册头像上传视频照片分享论坛发帖和邮箱等可以上传附件的地方也是上传漏洞的高危地带另外像文件管理器这样的功能也有可能被攻击者所利用值得注意的是如果移动端也存在类似的操作的话那么相同的原理也存在文件上传漏洞的风险一句话木马其中就是执行命令的函数就是接收的数据函数把接收的数据当作代码来执行这样我们就能够让插入了一句话木马的网站执行我们传递过去的任意语句这便是一句话木马的强大之处除此之外我们还有很多的一句话木马且不同语言后端的一句话木马也会不同文件上传漏洞类型前端验证文件头检查绕过绕过空格绕过点绕过双写绕过大小写绕过前端检测通过进行检测是非常容易绕过的原理原理应用系统校验是通过前端代码完成的可以对前端进行修改或者是通过抓包软件篡改上传的文件就会导致基于的校验很容易被绕过判断验证方式前端验证通过以后表单成功提交后会通过浏览器发出条网络请求但是如果前端验证不成功则不会发出这项网络请求可以在浏览器的网络元素中查看是否发出了网络请求绕过方法删除或者禁用火狐浏览器地址栏输入直接删除代码中事件中关于文件上传时验证上传文件的相关代码即可或者可以不加载所有还可以将源码一份到本地然后对相应代码进行修改本地提交即可使用代理上传文件上传符合要求的文件类型抓包修改文件类型事件在表单提交时触发表单是一个用来收集用户输入数据的界面元素它通常包含各种类型的字段例如文本框复选框下拉菜单等用户可以在这些字段中填写信息提交表单后用户输入的数据将被发送到服务器进行处理或存储表单在网页设计中经常用于收集用户信息进行用户注册提交订单等操作后端检测后缀名检测漏洞原理通常是针对文件的扩展名后缀进行检测主要是通过黑白名单进行过滤检测如果不符全过滤规则则不允许上传如上文中文件上传类似方法黑名单黑名单检测一般有个专门的文件里面会包含常见的危险脚本文件绕过方法解析漏洞后面会有稍微点的具体解释文件解析漏洞解析漏洞的解析漏洞解析漏洞截断上传截断类型截断截断原理由于代表结束符所以会把后面的所有字符都截断为编码后的结束标志截断条件版本小于的为状态函数在中的作用是判断解析用户提示的数据如包括有过来的数据增加转义字符以确保这些数据不会引起程序特别是数据库语句因为特殊字符引起的污染而出现致命的错误在的情况下如果输入的数据有单引号双引号反斜线与字符等字符都会被加上反斜线大小写绕过比如和之类黑名单扩展名的漏网之鱼比如和之类利用的命名机制空格在中后缀名后面的点和空格都会被删除掉双写绕过有时候在检测时后台会把敏感字符替换成空格这个时候我们可以使用双写进行绕过比如白名单原理白名单检测一般有个专门的文件里面会包含的正常可使用的文件绕过方法解析漏洞文件解析漏洞解析漏洞的解析漏洞解析漏洞截断上传截断类型截断截断原理由于代表结束符所以会把后面的所有字符都截断截断条件版本小于的为状态后端检测截断虽然应用做了校验但是由于文件上传后的路径用户可以控制攻击者可以利用手动添加字符串标识符的方式来将后面的拼接的内容进行截断导致后面的内容无效而且后面的内容又可以帮助我们绕过黑白名单的检测为十六进制标志对照表第一个就空字符表示字符串的结束它对应的进制是这里我们就可以用进制的来代替空字符让它截断后面的内容使用进行抓包因为这里是通过进行传递的文件上传后存储路径所以需要对进制的进行编码编码的结果就是通过这种方式就可以截断后面的内容让拼接的文件名不再进行生效后端检测检测是一种互联网标准用于标识和描述各种类型的数据它最初是为电子邮件系统设计的用于标识邮件中附加的各种类型的数据随后也被广泛应用在通信中用于描述传输的数据类型和格式常见的类型纯文本文档代码文档图像图像图像动画二进制数据文档检测方式在文件上传过程中服务端会针对我们的上传的文件生成一个数组的全局数组这个数组其中有一项就是这个文件的类型服务端对文件进行检测时就是通过检测脚本中的黑白名单和这个数组中的进行对比如果符合要求就允许上传这个文件绕过的原理部分应用系统判定文件类型是通过字段黑客可以通过抓包将字段改为常见的图片类型如从而绕过校验后端检测文件头检测漏洞漏洞原理一般文件内容验证使用函数检测会判断文件是否是一个有效的文件图片如果是则允许上传否则的话不允许上传本实验就是将一句话木马插入到一个合法的图片文件当中然后用管理工具进行远程连接图片马制作准备一张图片这里为和一个一句话木马通过以下命令合成一个图片马内容命令指定以二进制格式复制合并文件用于图像或者声音类文件指定以格式复制合并文件用于等文本类文件这条命令的意思是通过命令把图片文件以二进制文件形式添加到文件中以文本文件形式输出为文件解析图片马一般解析图片马需要结合解析漏洞或者文件包含才能解析图片马解析漏洞文件解析漏洞前提具体应用没有禁止文件的上传同时服务器提供商允许用户上传自定义的文件原理文件或者分布式配置文件全称是超文本入口提供了针对目录改变配置的方法即在一个特定的文档目录中放置一个包含一个或多个指令的文件以作用于此目录及其所有子目录作为用户所能使用的命令受到限制管理员可以通过的指令来设置文件内容解析规则的增加是可以按照组合的方式去做在当前目录下如果匹配到文件则被解析成代码执行在当前目录下如果匹配到文件则被解析成代码执行指令可以为特定文件或目录指定处理程序告诉服务器如何处理这些请求是解释器的处理程序类型服务器会将请求发送给解释器来执行解释器会解析代码并生成相应的输出指令将所有扩展名为的文件都解析为脚本以上是本人使用过的所有方式下面内容未曾试验过解析漏洞原理解析文件的规则是从右到左开始判断解析如果后缀名为不可识别文件解析就再往左判断比如的和这两种后缀是不可识别解析就会把解析成这俩版本有影响解析漏洞解析漏洞分两种目录解析以命名的文件夹里的文件都将会被当成文件执行文件解析像这种畸形文件名在后面的直接被忽略也就是说当成文件执行默认的可执行文件除了还包含这三种的解析漏洞原理通常被认为是一个相对安全的服务器软件拿到后一看后缀是便认为该文件是文件转交给去处理一看不存在便删去最后的又看存在便把当成要执行的文件了又因为后缀为认为这不是文件于是返回这其中涉及到的一个选项该值默认为表示开启开启这一选项可以对文件路径进行修理例子当遇到文件路径时若不存在则会去掉最后的然后判断是否存在若存在则把当做文件若仍不存在则继续去掉以此类推条件竞争漏洞条件竞争漏洞是一种服务器端的漏洞由于服务器端在处理不同用户的请求时是并发进行的因此如果并发处理不当或相关操作逻辑顺序设计的不合理时将会导致此类问题的发生上传文件源代码里没有校验上传的文件文件直接上传上传成功后才进行判断如果文件格式符合要求则重命名如果文件格式不符合要求将文件删除由于服务器并发处理同时多个请求假如用户上传了木马文件由于代码执行需要时间在此过程中用户访问了用户上传的文件会有以下三种情况访问时间点在上传成功之前没有此文件访问时间点在刚上传成功但还没有进行判断该文件存在访问时间点在判断之后文件被删除没有此文件二次渲染漏洞二次渲染原理在我们上传文件后网站会对图片进行二次处理格式尺寸要求等服务器会把里面的内容进行替换更新处理完成后根据我们原有的图片生成一个新的图片并放到网站对应的标签进行显示绕过配合文件包含漏洞将一句话木马插入到网站二次处理后的图片中也就是把一句话插入图片在二次渲染后会保留的那部分数据里确保不会在二次处理时删除掉这样二次渲染后的图片中就存在了一句话在配合文件包含漏洞获取可以配合条件竞争这里二次渲染的逻辑存在漏洞先将文件上传之后再判断符合就保存不符合删除可利用条件竞争来进行爆破上传如何判断图片是否进行了二次处理对比要上传图片与上传后的图片大小使用进制编辑器打开图片查看上传后保留了哪些数据查看那些数据被改变之文件上传无验证查看题目这里上传的文件没有限制直接写一个一句话木马写一个网站后门方法为在记事本上写上以下的木马然后改变后缀改为上传后获取到文件的存储地址用蚁剑连接至该地址地址连接密码输入后测试连接连接成功后添加就可以查看到了前端验证查看源码发现有验证火狐浏览器的的功能给禁止了在火狐框中输入把关闭然后就和上题做法一样了这里先了解一下什么是文件文件或者分布式配置文件提供了针对目录改变配置的方法即在一个特定的文档目录中放置一个包含一个或多个指令的文件以作用于此目录及其所有子目录作为用户所能使用的命令受到限制概述来说文件是服务器中的一个配置文件它负责相关目录下的网页配置通过文件可以帮我们实现网页重定向自定义错误页面改变文件扩展名允许阻止特定的用户或者目录的访问禁止目录列表配置默认文档等功能简单来说就是我上传了一个文件到服务器那么服务器之后就会将特定格式的文件以格式解析这里先写一个文件方法一所有的文件当做文件来解析方法二文件当作文件解析这里修改名字为直接这个就好不要加前缀这里再写个木马用上面那个木马就但后缀有上传文件接着上传木马然后就可以用蚁剑连接了绕过类型校验就是我们在上传文件到服务端的时候服务端会对客户端也就是我们上传的文件的类型进行检测如果是白名单所允许的则可以正常上传否则上传失败先上传一个小马然后用抓包直接修改为然后关闭拦截发现文件上传成功然后接下来步骤与以上一样截断先上传一个含木马的文件抓包后在处添加绕过对后缀的检测这样我们写的木马就会被放在文件中正常运行剩余步骤一样但是我们复制的中有显示多层目录等绝对路径我们只需要使用相对路径即可双写后缀查看源码黑名单中的字样被换作空字符故而抓包后双写后缀文件头检查这里先用自己电脑自带的画图软件画一张画直接上传抓包上传后在抓的包里写入一句话木马这里修改后缀为然后在改为上传成功连接蚁剑图片马失败了为什么',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-09-13 23:58:10',
+  postMainColor: '',
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18171d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f9fe')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body data-type="anzhiyu"><div id="web_bg"></div><div id="an_music_bg"></div><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><img class="loading-img nolazyload" alt="加载头像" src="https://tse4-mm.cn.bing.net/th/id/OIP-C.Fr9nRiu1t1xAkPysJWvDbgAAAA?w=206&amp;h=207&amp;c=7&amp;r=0&amp;o=5&amp;dpr=1.3&amp;pid=1.7"/><div class="loading-image-dot"></div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.getElementById('loading-box').classList.add("loaded");
+  },
+  initLoading: () => {
+    document.getElementById('loading-box').classList.remove("loaded")
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+setTimeout(function(){preloader.endLoading();},10000)
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.10/progress_bar/progress_bar.css"/><script async="async" src="https://cdn.cbd.int/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><a id="site-name" href="index.html" accesskey="h"><div class="title">喵酱的异想世界</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/link/"><span> 友人帐</span></a></div></div></div><div id="nav-right"><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-dice"></i></a></div><input id="center-console" type="checkbox"/><label class="widget" for="center-console" title="中控台" onclick="anzhiyu.switchConsole();"><i class="left"></i><i class="widget center"></i><i class="widget right"></i></label><div id="console"><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-weichat.png" target="_blank"><img class="post-qr-code-img" alt="微信" src="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-weichat.png"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-alipay.png" target="_blank"><img class="post-qr-code-img" alt="支付宝" src="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-alipay.png"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-newest-comments"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title"> Newest Comments</span></div><div class="aside-list"><span>loading...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="tags/CTF/" style="font-size: 1.05rem;">CTF<sup>1</sup></a></div></div><hr/></div></div><div class="console-card history"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>Archives</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="archives/2024/09/"><span class="card-archive-list-date">September 2024</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">3</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="archives/2024/07/"><span class="card-archive-list-date">July 2024</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" title="显示模式切换" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div><div class="console-btn-item" id="consoleMusic" onclick="anzhiyu.musicToggle()" title="音乐开关"><a class="music-switch"><i class="anzhiyufont anzhiyu-icon-music"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" title="切换"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="article-meta tags"><a class="article-meta__tags" href="../../../../tags/CTF/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>CTF</span></a></span></div></div><h1 class="post-title" itemprop="name headline">文件上传漏洞学习</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" itemprop="dateCreated datePublished" datetime="2024-09-13T15:14:14.000Z" title="Created 2024-09-13 23:14:14">2024-09-13</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" itemprop="dateCreated datePublished" datetime="2024-09-13T15:58:10.598Z" title="Updated 2024-09-13 23:58:10">2024-09-13</time></span></div><div class="meta-secondline"><span class="post-meta-separator">       </span><span class="post-meta-position" title="作者IP属地为长沙"><i class="anzhiyufont anzhiyu-icon-location-dot"></i>长沙</span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section><div id="post-top-cover"><img class="nolazyload" id="post-top-bg" src=""></div></header><main id="blog-container"><div class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container" itemscope itemtype="https://logic0713.github.io/2024/09/13/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/"><header><a href="../../../../tags/CTF/" tabindex="-1" itemprop="url">CTF</a><h1 id="CrawlerTitle" itemprop="name headline">文件上传漏洞学习</h1><span itemprop="author" itemscope itemtype="http://schema.org/Person">Logic</span><time itemprop="dateCreated datePublished" datetime="2024-09-13T15:14:14.000Z" title="Created 2024-09-13 23:14:14">2024-09-13</time><time itemprop="dateCreated datePublished" datetime="2024-09-13T15:58:10.598Z" title="Updated 2024-09-13 23:58:10">2024-09-13</time></header><p>教程来源：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_43390703/article/details/104858705">https://blog.csdn.net/qq_43390703/article/details/104858705</a></p>
+<p>​                   <a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1938541">https://cloud.tencent.com/developer/article/1938541</a></p>
+<h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><h2 id="什么是文件上传"><a href="#什么是文件上传" class="headerlink" title="什么是文件上传"></a>什么是文件上传</h2><ul>
+<li>文件上传就是通过流的方式将文件写到服务器上</li>
+<li>文件上传必须以POST提交表单</li>
+<li>表单中需要 <code>&lt;input type=&quot;file&quot; name=&quot;upload&quot;&gt;</code></li>
+</ul>
+<blockquote>
+<p>eval — 把字符串作为PHP代码执行</p>
+</blockquote>
+<h2 id="什么是文件上传漏洞"><a href="#什么是文件上传漏洞" class="headerlink" title="什么是文件上传漏洞"></a>什么是文件上传漏洞</h2><p><code>文件上传漏洞</code>是指由于程序员在对用户文件上传部分的控制不足或者处理缺陷，而导致的用户可以越过其本身权限向什么是文件上传漏洞</p>
+<p>文件上传漏洞是指由于程序员在对用户文件上传部分的控制不足或者处理缺陷，而导致的用户可以越过其本身权限向<u>服务器</u>上上传可执行的动态脚本文件。这里上传的文件可以是木马，病毒，恶意脚本或者WebShell等。</p>
+<p>“文件上传”本身没有问题，有问题的是文件上传后，服务器怎么处理、解释文件。如果服务器的处理逻辑做的不够安全，则会导致严重的后果。</p>
+<p>原因：</p>
+<ul>
+<li>对于上传文件的后缀名（扩展名）没有做较为严格的限制</li>
+<li>对于上传文件的MIMETYPE(指文件中包含的数据类型，由其扩展名来识别。) 没有做检查</li>
+<li>权限上没有对于上传的文件目录设置不可执行权限，（尤其是对于shebang类型的文件）</li>
+<li>对于web server对于上传文件或者指定目录的行为没有做限制</li>
+</ul>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>文件上传漏洞是指用户通过界面上的上传功能上传了一个可执行的<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?q=%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6&zhida_source=entity&is_preview=1">脚本文件</a>，而WEB端的系统并未对其进行检测或者检测的逻辑做的不够好。</p>
+<p>通过来说文件上传功能是没有问题的，主要是服务器如何对上传的文件如何进行处理。</p>
+<p>若WEB未对用户上传的文件进行有效的审查，若存在恶意用户对其上传<u><em><strong>一句话木马</strong></em></u>，从而实现控制WEB网站的目的。</p>
+<p>文件上传后导致的常见安全问题一般有:</p>
+<ul>
+<li><p>上传文件是Web脚本语言，服务器的Web容器解释并执行了用户上传的脚本,导致代码执行;</p>
+</li>
+<li><p>上传文件是病毒、木马文件，黑客用以诱骗用户或者管理员下载执行:</p>
+</li>
+<li><p>上传文件是钓鱼图片或为包含了脚本的图片，在某些版本的浏览器中会被作为脚本执行，被用于钓鱼和欺诈。</p>
+</li>
+</ul>
+<h3 id="产生原因"><a href="#产生原因" class="headerlink" title="产生原因"></a>产生原因</h3><ul>
+<li>对于上传文件的后缀名（扩展名）没有做较为严格的限制</li>
+<li>对于上传文件的MIMETYPE(指文件中包含的数据类型，由其扩展名来识别。) 没有做检查</li>
+<li>权限上没有对于上传的文件目录设置不可执行权限，（尤其是对于shebang类型的文件）</li>
+<li>对于web server对于上传文件或者指定目录的行为没有做限制</li>
+</ul>
+<h3 id="文件上传漏洞高危触发点"><a href="#文件上传漏洞高危触发点" class="headerlink" title="文件上传漏洞高危触发点"></a>文件上传漏洞高危触发点</h3><ul>
+<li>相册</li>
+<li>头像上传</li>
+<li>视频</li>
+<li>照片分享</li>
+<li>附件上传（论坛发帖、邮箱）</li>
+<li>文件管理器</li>
+</ul>
+<p>任何存在文件上传功能的地方都有可能存在文件上传漏洞，比如相册、头像上传，视频、照片分享。<br>论坛发帖和邮箱等可以上传附件的地方也是上传漏洞的高危地带。<br>另外像文件管理器这样的功能也有可能被攻击者所利用。</p>
+<p>值得注意的是，如果移动端也存在类似的操作的话，那么相同的原理，也存在文件上传漏洞的风险。</p>
+<h2 id="一句话木马"><a href="#一句话木马" class="headerlink" title="一句话木马"></a>一句话木马</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs asfkjbjdfnskg">&lt;?php eval($_POST[&#x27;a&#x27;]) ?&gt;<br></code></pre></td></tr></table></figure>
+
+<p>其中eval就是执行命令的函数，**$_POST[‘a’]**就是接收的数据。eval函数把接收的数据当作PHP代码来执行。这样我们就能够让插入了一句话木马的网站执行我们传递过去的任意PHP语句。这便是一句话木马的强大之处。</p>
+<blockquote>
+<p>除此之外我们还有很多的一句话木马，且不同语言后端的一句话木马也会不同</p>
+</blockquote>
+<h2 id="文件上传漏洞类型"><a href="#文件上传漏洞类型" class="headerlink" title="文件上传漏洞类型"></a>文件上传漏洞类型</h2><p>前端验证:文件头检查</p>
+<p>​		MIME绕过:</p>
+<p>​				  %00绕过</p>
+<p>​				  空格绕过</p>
+<p>​				  点绕过</p>
+<p>​				  双写绕过</p>
+<p>​				  大小写绕过</p>
+<p>​		.htaccess</p>
+<h1 id="前端检测"><a href="#前端检测" class="headerlink" title="前端检测"></a>前端检测</h1><p>通过javascript进行检测，是非常容易绕过的</p>
+<h2 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h2><blockquote>
+<p>原理:Web应用系统校验是通过前端javascript代码完成的。可以对前端javascript进行修改或者是通过抓包软件篡改上传的文件，就会导致基于js的校验很容易被绕过。</p>
+</blockquote>
+<h2 id="判断js验证方式"><a href="#判断js验证方式" class="headerlink" title="判断js验证方式"></a>判断js验证方式</h2><p>前端验证通过以后，表单成功提交后会通过浏览器发出─条网络请求，但是如果前端验证不成功，则不会发出这项网络请求;可以在浏览器的网络元素（F12 elements）中查看是否发出了网络请求。</p>
+<h2 id="绕过方法"><a href="#绕过方法" class="headerlink" title="绕过方法"></a>绕过方法</h2><ul>
+<li><p>删除或者禁用js:<code>火狐浏览器--&gt;about:config(地址栏输入)--&gt;JavaScriptenable-false (ajax)</code></p>
+<blockquote>
+<p>直接删除代码中onsubmit事件中关于文件上传时验证上传文件的相关代码即可，或者可以不加载所有js，还可以将html源码copy一份到本地，然后对相应代码进行修改，本地提交即可。</p>
+</blockquote>
+</li>
+<li><p>使用代理上传文件，Burp Suite;上传符合要求的文件类型，抓包修改文件类型。</p>
+</li>
+</ul>
+<blockquote>
+<p>onsubmit 事件在表单提交时触发。</p>
+<p>表单是一个用来收集用户输入数据的界面元素。它通常包含各种类型的字段，例如文本框、复选框、下拉菜单等，用户可以在这些字段中填写信息。提交表单后，用户输入的数据将被发送到服务器进行处理或存储。表单在网页设计中经常用于收集用户信息、进行用户注册、提交订单等操作。</p>
+</blockquote>
+<h1 id="后端检测-后缀名检测漏洞"><a href="#后端检测-后缀名检测漏洞" class="headerlink" title="后端检测_后缀名检测漏洞"></a>后端检测_后缀名检测漏洞</h1><h2 id="原理-2"><a href="#原理-2" class="headerlink" title="原理"></a>原理</h2><p>通常是针对文件的扩展名后缀进行检测，主要是通过黑白名单进行过滤检测，如果不符全过滤规则则不允许上传。</p>
+<p>如上文中php文件上传类似方法</p>
+<h2 id="黑名单"><a href="#黑名单" class="headerlink" title="黑名单"></a>黑名单</h2><p>黑名单检测:一般有个专门的 <code>blacklist 文件</code>，里面会包含常见的危险脚本文件。 </p>
+<h3 id="绕过方法-1"><a href="#绕过方法-1" class="headerlink" title="绕过方法"></a>绕过方法</h3><h4 id="解析漏洞（后面会有稍微点的具体解释）"><a href="#解析漏洞（后面会有稍微点的具体解释）" class="headerlink" title="解析漏洞（后面会有稍微点的具体解释）"></a>解析漏洞（后面会有稍微点的具体解释）</h4><ul>
+<li><p><code>.htaccess</code>文件解析漏洞- apache解析漏洞</p>
+</li>
+<li><p>IIS7.0 | IIS7.5 | Nginx的解析漏洞</p>
+</li>
+<li><p>IIS6.0解析漏洞</p>
+</li>
+</ul>
+<h4 id="截断上传"><a href="#截断上传" class="headerlink" title="截断上传"></a>截断上传</h4><ul>
+<li><p>截断类型:PHP%00截断</p>
+</li>
+<li><p>截断原理:由于00代表结束符,所以会把00后面的所有字符都截断(%00为url编码后的结束标志)</p>
+</li>
+<li><p>截断条件:PHP版本小于5.3.4,<strong>PHP的magic_quotes_gpc为OFF状态</strong></p>
+<blockquote>
+<p>magic_quotes_gpc函数在php中的作用是判断解析用户提示的数据，如包括有:post、get、cookie过来的数据增加转义字符“\”，以确保这些数据不会引起程序，特别是数据库语句因为特殊字符引起的污染而出现致命的错误</p>
+<p>在magic_quotes_gpc&#x3D;On的情况下，如果输入的数据有</p>
+<p>单引号（’）、双引号（”）、反斜线（）与 NUL（NULL 字符）等字符都会被加上反斜线。</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="大小写绕过"><a href="#大小写绕过" class="headerlink" title="大小写绕过"></a>大小写绕过</h4><blockquote>
+<p> 比如：<code>aSp</code>和<code>pHp</code>之类。</p>
+</blockquote>
+<h4 id="黑名单扩展名的漏网之鱼"><a href="#黑名单扩展名的漏网之鱼" class="headerlink" title="黑名单扩展名的漏网之鱼"></a>黑名单扩展名的漏网之鱼</h4><blockquote>
+<p>比如: <code>asa</code>和<code>cer</code>之类 <code>asp:</code> <code>asa</code> <code>cer</code> <code>aspx</code> <code>jsp:</code> <code>jspx</code> <code>jspf</code> <code>php:</code> <code>php</code> <code>php3</code> <code>php4</code> <code>php5</code> <code>phtml</code> <code>pht</code> <code>exe:</code> <code>exee</code> </p>
+</blockquote>
+<h4 id="利用Windows的命名机制"><a href="#利用Windows的命名机制" class="headerlink" title="利用Windows的命名机制"></a>利用Windows的命名机制</h4><blockquote>
+<p><code>shell.php.</code>  <code>shell.php空格</code>  <code>shell.php:1.jpg</code>  <code>shell. php::$DATA</code>  <code>shell.php:1.jpg</code>  在windows中，后缀名后面的点和空格都会被删除掉。</p>
+</blockquote>
+<h4 id="双写绕过"><a href="#双写绕过" class="headerlink" title="双写绕过"></a>双写绕过</h4><blockquote>
+<p>有时候在检测时，后台会把敏感字符替换成空格，这个时候，我们可以使用双写进行绕过。比如：<code>pphphp</code> </p>
+</blockquote>
+<h2 id="白名单"><a href="#白名单" class="headerlink" title="白名单"></a>白名单</h2><h3 id="原理-3"><a href="#原理-3" class="headerlink" title="原理"></a>原理</h3><blockquote>
+<p>白名单检测:一般有个专门的 <code>whitelist 文件</code>，里面会包含的正常可使用的文件：<code>Jpg</code> <code>png</code> <code>GIF</code> </p>
+</blockquote>
+<h3 id="绕过方法-2"><a href="#绕过方法-2" class="headerlink" title="绕过方法"></a>绕过方法</h3><h4 id="解析漏洞"><a href="#解析漏洞" class="headerlink" title="解析漏洞"></a>解析漏洞</h4><ul>
+<li>.htaccess文件解析漏洞</li>
+<li>apache解析漏洞</li>
+<li>IIS7.0 | IIS7.5 | Nginx的解析漏洞</li>
+<li>IIS6.0解析漏洞</li>
+</ul>
+<h4 id="截断上传-1"><a href="#截断上传-1" class="headerlink" title="截断上传"></a>截断上传</h4><ul>
+<li>截断类型:PHP%00截断</li>
+<li>截断原理:由于00代表结束符,所以会把00后面的所有字符都截断</li>
+<li>截断条件:PHP版本小于5.3.4,<strong>PHP的magic_quotes_gpc为OFF状态</strong></li>
+</ul>
+<h1 id="后端检测-00截断"><a href="#后端检测-00截断" class="headerlink" title="后端检测_00截断"></a>后端检测_00截断</h1><p>虽然web应用做了校验，但是由于文件上传后的<code>路径用户可以控制</code>，攻击者可以利用手动添加字符串标识符<code>0X00</code>的方式来将后面的拼接的内容<code>进行截断</code>，导致后面的内容无效，而且后面的内容又可以帮助我们绕过黑白名单的检测。</p>
+<blockquote>
+<p>0x为十六进制标志</p>
+</blockquote>
+<p><code>ASCII对照表</code>第一个就<code>空字符</code>（表示字符串的结束），它对应的16进制是<code>00</code>，这里我们就可以用16进制的<code>00</code>来代替<code>空字符</code>，让它<code>截断</code>后面的内容。</p>
+<p>使用<code>burpsuite</code>进行抓包，因为这里是<strong>通过<code>URL</code>进行传递的文件上传后存储路径</strong>，所以需要对<code>16进制</code>的<code>00</code>进行<code>URL编码</code>，编码的结果就是<code>**%00**</code>，通过这种方式，就可以<code>%00</code>截断后面的内容，<strong>让拼接的文件名不再进行生效</strong></p>
+<h1 id="后端检测-MIME检测"><a href="#后端检测-MIME检测" class="headerlink" title="后端检测_MIME检测"></a>后端检测_MIME检测</h1><h2 id="MIME"><a href="#MIME" class="headerlink" title="MIME"></a>MIME</h2><p>MIME（Multipurpose Internet Mail Extensions）是一种互联网标准，用于标识和描述各种类型的数据。它最初是为电子邮件系统设计的，用于标识邮件中附加的各种类型的数据。随后，MIME也被广泛应用在Web通信中，用于描述传输的数据类型和格式。</p>
+<h2 id="常见的MIME类型"><a href="#常见的MIME类型" class="headerlink" title="常见的MIME类型:"></a>常见的MIME类型:</h2><p>Content-Type：</p>
+<blockquote>
+<p><code>text/plain</code> （纯文本）  </p>
+<p><code>text/html</code> （HTML文档）  </p>
+<p><code>text/javascript</code> （js代码）  </p>
+<p><code>application/xhtml+xml</code> （XHTML文档）  </p>
+<p><code>image/gif</code> （GIF图像）  </p>
+<p><code>image/jpeg</code> （JPEG图像）  </p>
+<p><code>image/png</code> （PNG图像）  </p>
+<p><code>video/mpeg</code> （MPEG动画） </p>
+<p><code>application/octet-stream</code> （二进制数据）  </p>
+<p><code>application/pdf</code> （PDF文档)</p>
+</blockquote>
+<h2 id="检测方式"><a href="#检测方式" class="headerlink" title="检测方式"></a>检测方式</h2><p>在文件上传过程中，服务端会针对我们的上传的文件生成一个**数组(PHP 的全局数组 $_FILES)**，这个数组其中有一项就是这个文件的类型<code>file_type</code>；服务端对文件进行检测时，就是通过检测脚本中的黑白名单和这个数组中的<code>file_type</code>进行对比，如果符合要求就允许上传这个文件。</p>
+<h2 id="MIME绕过的原理："><a href="#MIME绕过的原理：" class="headerlink" title="MIME绕过的原理："></a>MIME绕过的原理：</h2><blockquote>
+<p>     部分Web应用系统判定文件类型是通过<code>content-type字段</code>，黑客可以通过抓包，将<code>content-type字段</code>改为常见的<code>图片类型</code>，如<code>image/gif</code>，从而绕过校验。</p>
+</blockquote>
+<h1 id="后端检测-文件头检测漏洞"><a href="#后端检测-文件头检测漏洞" class="headerlink" title="后端检测_文件头检测漏洞"></a>后端检测_文件头检测漏洞</h1><h2 id="漏洞原理"><a href="#漏洞原理" class="headerlink" title="漏洞原理"></a>漏洞原理</h2><blockquote>
+<p>    一般文件内容验证使用getimagesize函数检测,会判断文件是否是一个有效的文件图片,如果是,则允许上传,否则的话不允许上传。  本实验就是将一句话木马插入到一个[合法]的图片文件当中,然后用webshell管理工具进行远程连接。</p>
+</blockquote>
+<h2 id="图片马制作"><a href="#图片马制作" class="headerlink" title="图片马制作"></a>图片马制作</h2><p>准备一张图片，这里为<code>a.png</code>，和一个一句话木马a.php，通过以下命令合成一个图片马<code>3.php</code>： </p>
+<p><code>a.php</code>内容：<?php phpinfo(); ?></p>
+<p>命令:<strong>copy a.png&#x2F;b+a.php&#x2F;a 3.php</strong>  </p>
+<p> &#x2F;b:指定以二进制格式复制、<strong>合并文件</strong>，用于图像或者声音类文件 </p>
+<p>&#x2F;a:指定以ascii格式复制、<strong>合并文件</strong>用于txt等文本类文件</p>
+<p><strong>这条命令的意思是：通过<code>copy命令</code>，把<code>a.png</code>图片文件，以二进制文件形式添加到<code>a.php</code>文件中，以<code>ASCII文本文件</code>形式输出为<code>3.php</code>文件。</strong></p>
+<h2 id="解析图片马"><a href="#解析图片马" class="headerlink" title="解析图片马"></a>解析图片马</h2><p>一般解析图片马需要结合<code>解析漏洞</code>或者<code>文件包含</code>才能解析图片马；</p>
+<h1 id="解析漏洞-1"><a href="#解析漏洞-1" class="headerlink" title="解析漏洞"></a>解析漏洞</h1><h2 id="htaccess文件解析漏洞"><a href="#htaccess文件解析漏洞" class="headerlink" title=".htaccess文件解析漏洞"></a><code>.htaccess</code>文件解析漏洞</h2><h3 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h3><p>web具体应用没有禁止.htaccess文件的上传，同时web服务器提供商允许用户上传自定义的<code>.htaccess文件</code></p>
+<h3 id="原理-4"><a href="#原理-4" class="headerlink" title="原理"></a>原理</h3><p><code>.htaccess文件(或者&quot;分布式配置文件&quot;)</code> ,全称是<code>Hypertext Access(超文本入口)</code>。提供了针对目录改变配置的方法，即，在一个特定的文档目录中放置一个包含一个或多个指令的文件，以作用于此目录及其所有子目录。作为用户，所能使用的命令受到限制。管理员可以通过Apache的AllowOverride指令来设置。</p>
+<h3 id="文件内容"><a href="#文件内容" class="headerlink" title="文件内容"></a>文件内容</h3><p>解析规则的增加，是可以按照组合的方式去做</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">FilesMatch</span> &quot;<span class="hljs-attr">evil.gif</span>&quot;&gt;</span> SetHandler application/x-httpd-php   #在当前目录下，如果匹配到evil.gif文件，则被解析成PHP代码执行 <br>AddHandler php5-script .gif    <br>#在当前目录下，如果匹配到evil.gif文件，则被解析成PHP代码执行 <span class="hljs-tag">&lt;/<span class="hljs-name">FilesMatch</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>SetHandler指令，可以为特定文件或目录指定处理程序，告诉服务器如何处理这些请求。</p>
+<p>application&#x2F;x-httpd-php是PHP解释器的处理程序类型。服务器会将请求发送给PHP解释器来执行，解释器会解析PHP代码并生成相应的输出。</p>
+<p><code>AddHandler</code> 指令将所有扩展名为 .gif 的文件都解析为 PHP 脚本。</p>
+<hr>
+<p><strong>以上是本人使用过的所有方式，下面内容未曾试验过</strong></p>
+<hr>
+<h2 id="Apache解析漏洞"><a href="#Apache解析漏洞" class="headerlink" title="Apache解析漏洞"></a><code>Apache</code>解析漏洞</h2><h3 id="原理-5"><a href="#原理-5" class="headerlink" title="原理"></a>原理</h3><p><code>Apache</code> 解析文件的规则是<code>从右到左</code>开始判断解析，如果<code>后缀名</code>为<code>不可识别</code>文件解析，就再往左判断。比如<code>test.php.a.b</code>的“<code>.a</code>”和“<code>.b</code>”这两种后缀是<code>apache</code>不可识别解析，<code>apache</code>就会把<code>test.php.a.b</code>解析成<code>test.php</code>。</p>
+<p>（ apache 1.x  apache 2.2.x这俩版本有影响）</p>
+<h2 id="IIS6-0解析漏洞"><a href="#IIS6-0解析漏洞" class="headerlink" title="IIS6.0解析漏洞"></a><code>IIS6.0</code>解析漏洞</h2><blockquote>
+<p><code>IIS6.0</code>解析漏洞分<code>两种</code>：  1、目录解析： 以<code>xx.asp</code>命名的<code>文件夹</code>里的文件都将会被当成<code>ASP文件</code>执行。  2、文件解析： <code>xx.asp;.jpg</code> 像这种畸形文件名在<code>;</code>后面的直接被忽略，也就是说当成<code>xx.asp</code>文件执行。</p>
+</blockquote>
+<p> <code>IIS6.0</code> 默认的可执行文件除了<code>asp</code>还包含这三种 <code>.asa</code> <code>.cer</code> <code>.cdx</code>。</p>
+<h2 id="IIS7-0-IIS7-5-Nginx的解析漏洞"><a href="#IIS7-0-IIS7-5-Nginx的解析漏洞" class="headerlink" title="IIS7.0 | IIS7.5 | Nginx的解析漏洞"></a>IIS7.0 | IIS7.5 | Nginx的解析漏洞</h2><h5 id="原理："><a href="#原理：" class="headerlink" title="原理："></a>原理：</h5><blockquote>
+<p> <code>Nginx</code>（Nginx通常被认为是一个相对安全的Web服务器软件）拿到URI&#x2F;test.jpg&#x2F;test.php后，一看后缀是.php，便认为该文件是php文件，转交给php去处理。php一看<code>/test.jpg/test.php</code>不存在，便删去最后的<code>/test.php</code>，又看<code>/test.jpg</code>存在，便把<code>/test.jpg</code>当成要执行的文件了，又因为后缀为<code>.jpg</code>，php认为这不是php文件，于是返回<code>Access denied</code>。这其中涉及到php的一个选项：<code>cgi.fix_pathinfo</code>，该值默认为<code>1</code>，表示开启。开启这一选项<code>PHP</code>可以对文件路径进行<code>修理</code>。 </p>
+</blockquote>
+<p>例子：当php遇到文件路径&#x2F;1.jpg&#x2F;2.txt&#x2F;3.php时，若&#x2F;1.jpg&#x2F;2.txt&#x2F;3.php不存在，则会去掉最后的&#x2F;3.php，然后判断&#x2F;1.jpg&#x2F;2.txt是否存在，若存在，则把&#x2F;1.jpg&#x2F;2.txt当做文件&#x2F;1.jpg&#x2F;2.txt&#x2F;3.php，若&#x2F;1.jpg&#x2F;2.txt仍不存在，则继续去掉&#x2F;2.txt，以此类推。</p>
+<h2 id="条件竞争漏洞"><a href="#条件竞争漏洞" class="headerlink" title="条件竞争漏洞"></a>条件竞争漏洞</h2><p>条件竞争漏洞是一种服务器端的漏洞，由于服务器端在处理不同用户的请求时是并发进行的，因此，如果并发处理不当或相关操作逻辑顺序设计的不合理时，将会导致此类问题的发生。</p>
+<p>上传文件源代码里没有校验上传的文件，文件直接上传，上传成功后才进行判断：如果文件格式符合要求，则重命名，如果文件格式不符合要求，将文件删除。 </p>
+<p>由于服务器并发处理(同时)多个请求，假如<code>a用户</code>上传了木马文件，由于代码执行需要时间，在此过程中<code>b用户</code>访问了<code>a用户</code>上传的文件，会有以下三种情况： </p>
+<p>1.访问时间点在上传成功之前，没有此文件。 </p>
+<p>2.访问时间点在刚上传成功但还没有进行判断，该文件存在。 </p>
+<p>3.访问时间点在判断之后，文件被删除，没有此文件。</p>
+<h2 id="二次渲染漏洞"><a href="#二次渲染漏洞" class="headerlink" title="二次渲染漏洞"></a>二次渲染漏洞</h2><h4 id="1-二次渲染原理："><a href="#1-二次渲染原理：" class="headerlink" title="1. 二次渲染原理："></a>1. 二次渲染原理：</h4><blockquote>
+<p>         在我们上传文件后，网站会对图片进行二次处理（格式、尺寸要求等），服务器会把里面的内容进行替换更新，处理完成后，根据我们原有的图片生成一个新的图片并放到网站对应的标签进行显示。</p>
+</blockquote>
+<h4 id="2-绕过："><a href="#2-绕过：" class="headerlink" title="2. 绕过："></a>2. 绕过：</h4><blockquote>
+<p>1、配合文件包含漏洞：  将一句话木马插入到网站二次处理后的图片中，也就是把一句话插入图片在二次渲染后会保留的那部分数据里，确保不会在二次处理时删除掉。这样二次渲染后的图片中就存在了一句话，在配合文件包含漏洞获取webshell。  2、可以配合条件竞争：  这里二次渲染的逻辑存在漏洞，先将文件上传，之后再判断，符合就保存，不符合删除，可利用条件竞争来进行爆破上传</p>
+</blockquote>
+<h4 id="3-如何判断图片是否进行了二次处理？"><a href="#3-如何判断图片是否进行了二次处理？" class="headerlink" title="3. 如何判断图片是否进行了二次处理？"></a>3. 如何判断图片是否进行了二次处理？</h4><blockquote>
+<p>     对比要上传图片与上传后的图片大小，使用<code>16进制编辑器</code>打开图片查看上传后保留了哪些数据，查看那些数据被改变。</p>
+</blockquote>
+<h1 id="ctfhub之文件上传"><a href="#ctfhub之文件上传" class="headerlink" title="ctfhub之文件上传"></a>ctfhub之文件上传</h1><h2 id="无验证"><a href="#无验证" class="headerlink" title="无验证"></a>无验证</h2><p>1.查看题目，这里上传的文件没有限制，直接写一个一句话木马写一个网站后门。方法为在记事本上写上以下的木马，然后改变后缀改为php</p>
+<?php @eval($_POST['hack']);?><p>上传后获取到文件的存储地址</p>
+<p>用蚁剑连接至该地址（url&#x2F;地址）</p>
+<p>连接密码输入hack</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0%5C20210617160405518.jpg"></p>
+<p>后测试连接</p>
+<p>连接成功后添加，就可以查看到flag了</p>
+<h2 id="前端验证"><a href="#前端验证" class="headerlink" title="前端验证"></a>前端验证</h2><p>查看源码发现有JavaScript验证</p>
+<p>火狐浏览器的JavaScript的功能给禁止了</p>
+<p>在火狐url框中输入about:config</p>
+<p>把javascript enabled关闭</p>
+<p>然后就和上题做法一样了</p>
+<h2 id="htaccess"><a href="#htaccess" class="headerlink" title=".htaccess"></a>.htaccess</h2><p>1.这里先了解一下什么是.htacces文件</p>
+<p>.htaccess文件(或者”分布式配置文件”）提供了针对目录改变配置的方法， 即，在一个特定的文档目录中放置一个包含一个或多个指令的文件， 以作用于此目录及其所有子目录。作为用户，所能使用的命令受到限制。</p>
+<p>概述来说，htaccess文件是Apache服务器中的一个配置文件，它负责相关目录下的网页配置。通过htaccess文件，可以帮我们实现：网页301重定向、自定义404错误页面、改变文件扩展名、允许&#x2F;阻止特定的用户或者目录的访问、禁止目录列表、配置默认文档等功能。</p>
+<p>简单来说，就是我上传了一个.htaccess文件到服务器，那么服务器之后就会将特定格式的文件以php格式解析。</p>
+<p>这里先写一个.htaaccess文件</p>
+<p>方法一</p>
+<p>SetHandler application&#x2F;x-httpd-php &#x2F;&#x2F;所有的文件当做php文件来解析</p>
+<p>方法二</p>
+<p>AddType application&#x2F;x-httpd-php .png &#x2F;&#x2F;.png文件当作php文件解析</p>
+<p>这里修改名字为.htaccess。直接这个就好，不要加前缀。</p>
+<p>这里再写个木马。</p>
+<p>用上面那个木马就ok，但后缀有png。</p>
+<p>1.上传.htaccess文件</p>
+<p>2.接着上传木马</p>
+<p>然后就可以用蚁剑连接了</p>
+<h2 id="MIME绕过"><a href="#MIME绕过" class="headerlink" title="MIME绕过"></a>MIME绕过</h2><p>MIME类型校验就是我们在上传文件到服务端的时候，服务端会对客户端也就是我们上传的文件的Content-Type类型进行检测，如果是白名单所允许的，则可以正常上传，否则上传失败。</p>
+<p>先上传一个小马，然后用bp抓包</p>
+<p>直接修改Content-Type为image&#x2F;jpeg</p>
+<p>然后intercept off （bp关闭拦截）</p>
+<p>发现文件上传成功</p>
+<p>然后接下来步骤与以上一样</p>
+<h2 id="00截断"><a href="#00截断" class="headerlink" title="00截断"></a>00截断</h2><p>先上传一个含木马的jpg文件——111.jpg，抓包后在url处添加111.php%00</p>
+<p>绕过对php后缀的检测，这样我们写的php木马就会被放在php文件中正常运行</p>
+<p>剩余步骤一样</p>
+<p>但是我们复制的url中有显示（多层目录）</p>
+<p><a target="_blank" rel="noopener" href="http://challenge-9681de2035f1bdde.sandbox.ctfhub.com:10800/var/www/html/upload/111.php">http://challenge-9681de2035f1bdde.sandbox.ctfhub.com:10800/var/www/html/upload/111.php</a></p>
+<p>等绝对路径</p>
+<p>我们只需要使用</p>
+<p><a target="_blank" rel="noopener" href="http://challenge-9681de2035f1bdde.sandbox.ctfhub.com:10800/upload/111.php">http://challenge-9681de2035f1bdde.sandbox.ctfhub.com:10800/upload/111.php</a></p>
+<p>相对路径即可</p>
+<h2 id="双写后缀"><a href="#双写后缀" class="headerlink" title="双写后缀"></a>双写后缀</h2><p>查看源码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-variable">$name</span> = <span class="hljs-title function_ invoke__">basename</span>(<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;file&#x27;</span>][<span class="hljs-string">&#x27;name&#x27;</span>]);<br><span class="hljs-variable">$blacklist</span> = <span class="hljs-keyword">array</span>(<span class="hljs-string">&quot;php&quot;</span>, <span class="hljs-string">&quot;php5&quot;</span>, <span class="hljs-string">&quot;php4&quot;</span>, <span class="hljs-string">&quot;php3&quot;</span>, <span class="hljs-string">&quot;phtml&quot;</span>, <span class="hljs-string">&quot;pht&quot;</span>, <span class="hljs-string">&quot;jsp&quot;</span>, <span class="hljs-string">&quot;jspa&quot;</span>, <span class="hljs-string">&quot;jspx&quot;</span>, <span class="hljs-string">&quot;jsw&quot;</span>, <span class="hljs-string">&quot;jsv&quot;</span>, <span class="hljs-string">&quot;jspf&quot;</span>, <span class="hljs-string">&quot;jtml&quot;</span>, <span class="hljs-string">&quot;asp&quot;</span>, <span class="hljs-string">&quot;aspx&quot;</span>, <span class="hljs-string">&quot;asa&quot;</span>, <span class="hljs-string">&quot;asax&quot;</span>, <span class="hljs-string">&quot;ascx&quot;</span>, <span class="hljs-string">&quot;ashx&quot;</span>, <span class="hljs-string">&quot;asmx&quot;</span>, <span class="hljs-string">&quot;cer&quot;</span>, <span class="hljs-string">&quot;swf&quot;</span>, <span class="hljs-string">&quot;htaccess&quot;</span>, <span class="hljs-string">&quot;ini&quot;</span>);<br><span class="hljs-variable">$name</span> = <span class="hljs-title function_ invoke__">str_ireplace</span>(<span class="hljs-variable">$blacklist</span>, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-variable">$name</span>);<br></code></pre></td></tr></table></figure>
+
+<p>黑名单中的字样被换作空字符</p>
+<p>故而抓包后双写后缀</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0%5C135465.jpg"></p>
+<h2 id="文件头检查"><a href="#文件头检查" class="headerlink" title="文件头检查"></a>文件头检查</h2><p>这里先用自己电脑自带的画图软件画一张画，直接上传抓包。上传后在抓的包里写入一句话木马。</p>
+<p>这里修改后缀为php，然后在Content-type改为 image&#x2F;png</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0%5CQQ%E5%9B%BE%E7%89%8720240317142155.png"></p>
+<p>上传成功，连接蚁剑</p>
+<p><strong>图片马失败了，为什么？</strong></p>
+</article><div class="post-copyright"><div class="copyright-cc-box"><i class="anzhiyufont anzhiyu-icon-copyright"></i></div><div class="post-copyright__author_box"><a class="post-copyright__author_img" href="../../../../index.html" title="头像"><img class="post-copyright__author_img_back" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://tse4-mm.cn.bing.net/th/id/OIP-C.Fr9nRiu1t1xAkPysJWvDbgAAAA?w=206&amp;h=207&amp;c=7&amp;r=0&amp;o=5&amp;dpr=1.3&amp;pid=1.7" title="头像" alt="头像"><img class="post-copyright__author_img_front" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://tse4-mm.cn.bing.net/th/id/OIP-C.Fr9nRiu1t1xAkPysJWvDbgAAAA?w=206&amp;h=207&amp;c=7&amp;r=0&amp;o=5&amp;dpr=1.3&amp;pid=1.7" title="头像" alt="头像"></a><div class="post-copyright__author_name">Logic</div><div class="post-copyright__author_desc"></div></div><div class="post-copyright__post__info"><a class="post-copyright__original" title="该文章为原创文章，注意版权协议" href="https://logic0713.github.io/2024/09/13/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/">原创</a><a class="post-copyright-title"><span onclick="rm.copyPageUrl('https://logic0713.github.io/2024/09/13/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/')">文件上传漏洞学习</span></a></div><div class="post-tools" id="post-tools"><div class="post-tools-left"><div class="rewardLeftButton"><div class="post-reward" onclick="anzhiyu.addRewardMask()"><div class="reward-button button--animated" title="赞赏作者"><i class="anzhiyufont anzhiyu-icon-hand-heart-fill"></i>打赏作者</div><div class="reward-main"><div class="reward-all"><span class="reward-title">感谢你赐予我前进的力量</span><ul class="reward-group"><li class="reward-item"><a href="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-weichat.png" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-weichat.png" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-alipay.png" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-alipay.png" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul><a class="reward-main-btn" href="/about/#about-reward" target="_blank"><div class="reward-text">赞赏者名单</div><div class="reward-dec">因为你们的支持让我意识到写文章的价值🙏</div></a></div></div></div><div id="quit-box" onclick="anzhiyu.removeRewardMask()" style="display: none"></div></div><div class="shareRight"><div class="share-link mobile"><div class="share-qrcode"><div class="share-button" title="使用手机访问这篇文章"><i class="anzhiyufont anzhiyu-icon-qrcode"></i></div><div class="share-main"><div class="share-main-all"><div id="qrcode" title="https://logic0713.github.io/2024/09/13/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/"></div><div class="reward-dec">使用手机访问这篇文章</div></div></div></div></div><div class="share-link weibo"><a class="share-button" target="_blank" href="https://service.weibo.com/share/share.php?title=文件上传漏洞学习&amp;url=https://logic0713.github.io/2024/09/13/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/&amp;pic=" rel="external nofollow noreferrer noopener"><i class="anzhiyufont anzhiyu-icon-weibo"></i></a></div><script>function copyCurrentPageUrl() {
+  var currentPageUrl = window.location.href;
+  var input = document.createElement("input");
+  input.setAttribute("value", currentPageUrl);
+  document.body.appendChild(input);
+  input.select();
+  input.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  document.body.removeChild(input);
+}</script><div class="share-link copyurl"><div class="share-button" id="post-share-url" title="复制链接" onclick="copyCurrentPageUrl()"><i class="anzhiyufont anzhiyu-icon-link"></i></div></div></div></div></div><div class="post-copyright__notice"><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-tools-right"><div class="tag_share"><div class="post-meta__box"><div class="post-meta__box__tag-list"><a class="post-meta__box__tags" href="../../../../tags/CTF/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>CTF<span class="tagsPageCount">1</span></a></div></div></div><div class="post_share"><div class="social-share" data-image="https://tse4-mm.cn.bing.net/th/id/OIP-C.Fr9nRiu1t1xAkPysJWvDbgAAAA?w=206&amp;h=207&amp;c=7&amp;r=0&amp;o=5&amp;dpr=1.3&amp;pid=1.7" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"/><script src="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer="defer"></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="../dvwa%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="../../../../index.html" onerror="onerror=null;src='../../../../img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">Dvwa靶场练习</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="author-info-avatar"><img class="avatar-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://tse4-mm.cn.bing.net/th/id/OIP-C.Fr9nRiu1t1xAkPysJWvDbgAAAA?w=206&amp;h=207&amp;c=7&amp;r=0&amp;o=5&amp;dpr=1.3&amp;pid=1.7" onerror="this.onerror=null;this.src='../img/friend_404.gif'" alt="avatar"/></div><div class="author-info__description"></div></div></div><div class="card-widget anzhiyu-right-widget" id="card-wechat" onclick="null"><div id="flip-wrapper"><div id="flip-content"><div class="face" style="background: url(https://bu.dusays.com/2023/01/13/63c02edf44033.png) center center / 100% no-repeat"></div><div class="back face" style="background: url(https://bu.dusays.com/2023/05/13/645fa415e8694.png) center center / 100% no-repeat"></div></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bars"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%95%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">引言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="toc-number">1.1.</span> <span class="toc-text">什么是文件上传</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.2.</span> <span class="toc-text">什么是文件上传漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-number">1.2.1.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%A7%E7%94%9F%E5%8E%9F%E5%9B%A0"><span class="toc-number">1.2.2.</span> <span class="toc-text">产生原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%E9%AB%98%E5%8D%B1%E8%A7%A6%E5%8F%91%E7%82%B9"><span class="toc-number">1.2.3.</span> <span class="toc-text">文件上传漏洞高危触发点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC"><span class="toc-number">1.3.</span> <span class="toc-text">一句话木马</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.4.</span> <span class="toc-text">文件上传漏洞类型</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E7%AB%AF%E6%A3%80%E6%B5%8B"><span class="toc-number">2.</span> <span class="toc-text">前端检测</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E7%90%86-1"><span class="toc-number">2.1.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A4%E6%96%ADjs%E9%AA%8C%E8%AF%81%E6%96%B9%E5%BC%8F"><span class="toc-number">2.2.</span> <span class="toc-text">判断js验证方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%95%E8%BF%87%E6%96%B9%E6%B3%95"><span class="toc-number">2.3.</span> <span class="toc-text">绕过方法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%90%8E%E7%AB%AF%E6%A3%80%E6%B5%8B-%E5%90%8E%E7%BC%80%E5%90%8D%E6%A3%80%E6%B5%8B%E6%BC%8F%E6%B4%9E"><span class="toc-number">3.</span> <span class="toc-text">后端检测_后缀名检测漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E7%90%86-2"><span class="toc-number">3.1.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%BB%91%E5%90%8D%E5%8D%95"><span class="toc-number">3.2.</span> <span class="toc-text">黑名单</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%95%E8%BF%87%E6%96%B9%E6%B3%95-1"><span class="toc-number">3.2.1.</span> <span class="toc-text">绕过方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E%EF%BC%88%E5%90%8E%E9%9D%A2%E4%BC%9A%E6%9C%89%E7%A8%8D%E5%BE%AE%E7%82%B9%E7%9A%84%E5%85%B7%E4%BD%93%E8%A7%A3%E9%87%8A%EF%BC%89"><span class="toc-number">3.2.1.1.</span> <span class="toc-text">解析漏洞（后面会有稍微点的具体解释）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%88%AA%E6%96%AD%E4%B8%8A%E4%BC%A0"><span class="toc-number">3.2.1.2.</span> <span class="toc-text">截断上传</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%A7%E5%B0%8F%E5%86%99%E7%BB%95%E8%BF%87"><span class="toc-number">3.2.1.3.</span> <span class="toc-text">大小写绕过</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%BB%91%E5%90%8D%E5%8D%95%E6%89%A9%E5%B1%95%E5%90%8D%E7%9A%84%E6%BC%8F%E7%BD%91%E4%B9%8B%E9%B1%BC"><span class="toc-number">3.2.1.4.</span> <span class="toc-text">黑名单扩展名的漏网之鱼</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A9%E7%94%A8Windows%E7%9A%84%E5%91%BD%E5%90%8D%E6%9C%BA%E5%88%B6"><span class="toc-number">3.2.1.5.</span> <span class="toc-text">利用Windows的命名机制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%8C%E5%86%99%E7%BB%95%E8%BF%87"><span class="toc-number">3.2.1.6.</span> <span class="toc-text">双写绕过</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%99%BD%E5%90%8D%E5%8D%95"><span class="toc-number">3.3.</span> <span class="toc-text">白名单</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86-3"><span class="toc-number">3.3.1.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%95%E8%BF%87%E6%96%B9%E6%B3%95-2"><span class="toc-number">3.3.2.</span> <span class="toc-text">绕过方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E"><span class="toc-number">3.3.2.1.</span> <span class="toc-text">解析漏洞</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%88%AA%E6%96%AD%E4%B8%8A%E4%BC%A0-1"><span class="toc-number">3.3.2.2.</span> <span class="toc-text">截断上传</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%90%8E%E7%AB%AF%E6%A3%80%E6%B5%8B-00%E6%88%AA%E6%96%AD"><span class="toc-number">4.</span> <span class="toc-text">后端检测_00截断</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%90%8E%E7%AB%AF%E6%A3%80%E6%B5%8B-MIME%E6%A3%80%E6%B5%8B"><span class="toc-number">5.</span> <span class="toc-text">后端检测_MIME检测</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#MIME"><span class="toc-number">5.1.</span> <span class="toc-text">MIME</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84MIME%E7%B1%BB%E5%9E%8B"><span class="toc-number">5.2.</span> <span class="toc-text">常见的MIME类型:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A3%80%E6%B5%8B%E6%96%B9%E5%BC%8F"><span class="toc-number">5.3.</span> <span class="toc-text">检测方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MIME%E7%BB%95%E8%BF%87%E7%9A%84%E5%8E%9F%E7%90%86%EF%BC%9A"><span class="toc-number">5.4.</span> <span class="toc-text">MIME绕过的原理：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%90%8E%E7%AB%AF%E6%A3%80%E6%B5%8B-%E6%96%87%E4%BB%B6%E5%A4%B4%E6%A3%80%E6%B5%8B%E6%BC%8F%E6%B4%9E"><span class="toc-number">6.</span> <span class="toc-text">后端检测_文件头检测漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86"><span class="toc-number">6.1.</span> <span class="toc-text">漏洞原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E7%89%87%E9%A9%AC%E5%88%B6%E4%BD%9C"><span class="toc-number">6.2.</span> <span class="toc-text">图片马制作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E6%9E%90%E5%9B%BE%E7%89%87%E9%A9%AC"><span class="toc-number">6.3.</span> <span class="toc-text">解析图片马</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E-1"><span class="toc-number">7.</span> <span class="toc-text">解析漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#htaccess%E6%96%87%E4%BB%B6%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E"><span class="toc-number">7.1.</span> <span class="toc-text">.htaccess文件解析漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E6%8F%90"><span class="toc-number">7.1.1.</span> <span class="toc-text">前提</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86-4"><span class="toc-number">7.1.2.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9"><span class="toc-number">7.1.3.</span> <span class="toc-text">文件内容</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Apache%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E"><span class="toc-number">7.2.</span> <span class="toc-text">Apache解析漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86-5"><span class="toc-number">7.2.1.</span> <span class="toc-text">原理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IIS6-0%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E"><span class="toc-number">7.3.</span> <span class="toc-text">IIS6.0解析漏洞</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IIS7-0-IIS7-5-Nginx%E7%9A%84%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E"><span class="toc-number">7.4.</span> <span class="toc-text">IIS7.0 | IIS7.5 | Nginx的解析漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8E%9F%E7%90%86%EF%BC%9A"><span class="toc-number">7.4.0.0.1.</span> <span class="toc-text">原理：</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89%E6%BC%8F%E6%B4%9E"><span class="toc-number">7.5.</span> <span class="toc-text">条件竞争漏洞</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E6%AC%A1%E6%B8%B2%E6%9F%93%E6%BC%8F%E6%B4%9E"><span class="toc-number">7.6.</span> <span class="toc-text">二次渲染漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E4%BA%8C%E6%AC%A1%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86%EF%BC%9A"><span class="toc-number">7.6.0.1.</span> <span class="toc-text">1. 二次渲染原理：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E7%BB%95%E8%BF%87%EF%BC%9A"><span class="toc-number">7.6.0.2.</span> <span class="toc-text">2. 绕过：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E5%A6%82%E4%BD%95%E5%88%A4%E6%96%AD%E5%9B%BE%E7%89%87%E6%98%AF%E5%90%A6%E8%BF%9B%E8%A1%8C%E4%BA%86%E4%BA%8C%E6%AC%A1%E5%A4%84%E7%90%86%EF%BC%9F"><span class="toc-number">7.6.0.3.</span> <span class="toc-text">3. 如何判断图片是否进行了二次处理？</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ctfhub%E4%B9%8B%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="toc-number">8.</span> <span class="toc-text">ctfhub之文件上传</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E9%AA%8C%E8%AF%81"><span class="toc-number">8.1.</span> <span class="toc-text">无验证</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%AB%AF%E9%AA%8C%E8%AF%81"><span class="toc-number">8.2.</span> <span class="toc-text">前端验证</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#htaccess"><span class="toc-number">8.3.</span> <span class="toc-text">.htaccess</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MIME%E7%BB%95%E8%BF%87"><span class="toc-number">8.4.</span> <span class="toc-text">MIME绕过</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#00%E6%88%AA%E6%96%AD"><span class="toc-number">8.5.</span> <span class="toc-text">00截断</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8C%E5%86%99%E5%90%8E%E7%BC%80"><span class="toc-number">8.6.</span> <span class="toc-text">双写后缀</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%A4%B4%E6%A3%80%E6%9F%A5"><span class="toc-number">8.7.</span> <span class="toc-text">文件头检查</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="" title="文件上传漏洞学习">文件上传漏洞学习</a><time datetime="2024-09-13T15:14:14.000Z" title="Created 2024-09-13 23:14:14">2024-09-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="../dvwa%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0/" title="Dvwa靶场练习">Dvwa靶场练习</a><time datetime="2024-09-12T17:04:27.000Z" title="Created 2024-09-13 01:04:27">2024-09-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="../../03/Docker%E5%88%9D%E5%AD%A6/" title="Docker初学">Docker初学</a><time datetime="2024-09-03T14:08:06.000Z" title="Created 2024-09-03 22:08:06">2024-09-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="../../../07/07/hello-world/" title="Hello World">Hello World</a><time datetime="2024-07-07T09:03:56.342Z" title="Created 2024-07-07 17:03:56">2024-07-07</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"></div><div id="footer-bar"><div class="footer-bar-links"><div class="footer-bar-left"><div id="footer-bar-tips"><div class="copyright">&copy;2020 - 2024 By <a class="footer-bar-link" href="../index.html" title="Logic" target="_blank">Logic</a></div></div><div id="footer-type-tips"></div></div><div class="footer-bar-right"><a class="footer-bar-link" target="_blank" rel="noopener" href="https://github.com/anzhiyu-c/hexo-theme-anzhiyu" title="主题">主题</a></div></div></div></footer></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="sidebar-site-data site-data is-center"><a href="archives/" title="archive"><div class="headline">Articles</div><div class="length-num">4</div></a><a href="tags/" title="tag"><div class="headline">Tags</div><div class="length-num">1</div></a><a href="categories/" title="category"><div class="headline">Categories</div><div class="length-num">0</div></a></div><span class="sidebar-menu-item-title">Function</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" href="javascript:void(0);" title="Display Mode"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span>Display Mode</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://blog.anheyu.com/" title="博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/favicon.ico" alt="博客"/><span class="back-menu-item-text">博客</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://image.anheyu.com/" title="安知鱼图床"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.anheyu.com/favicon.ico" alt="安知鱼图床"/><span class="back-menu-item-text">安知鱼图床</span></a></div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/link/"><span> 友人帐</span></a></div></div><span class="sidebar-menu-item-title">标签</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="tags/CTF/" style="font-size: 0.88rem;">CTF<sup>1</sup></a></div></div><hr/></div></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="anzhiyufont anzhiyu-icon-book-open"></i></button><button id="translateLink" type="button" title="Switch Between Traditional Chinese And Simplified Chinese">繁</button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="anzhiyufont anzhiyu-icon-gear"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="anzhiyufont anzhiyu-icon-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></button></div></div><div id="nav-music"><a id="nav-music-hoverTips" onclick="anzhiyu.musicToggle()" accesskey="m">播放音乐</a><div id="console-music-bg"></div><meting-js id="8152976493" server="netease" type="playlist" mutex="true" preload="none" theme="var(--anzhiyu-main)" data-lrctype="0" order="random" volume="0.7"></meting-js></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="anzhiyufont anzhiyu-icon-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="anzhiyufont anzhiyu-icon-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right" style="font-size: 1rem;"></i></div><div class="rightMenu-item" id="menu-top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="anzhiyufont anzhiyu-icon-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="anzhiyufont anzhiyu-icon-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="anzhiyufont anzhiyu-icon-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="anzhiyufont anzhiyu-icon-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="anzhiyufont anzhiyu-icon-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-newwindowimg"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开图片</span></div><div class="rightMenu-item" id="menu-search"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="anzhiyufont anzhiyu-icon-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="anzhiyufont anzhiyu-icon-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="anzhiyufont anzhiyu-icon-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open(&quot;https://y.qq.com/n/ryqq/playlist/8802438608&quot;, &quot;_blank&quot;);" style="display: none;"><i class="anzhiyufont anzhiyu-icon-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="anzhiyufont anzhiyu-icon-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="anzhiyufont anzhiyu-icon-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item" id="menu-copy" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制地址</span></a><a class="rightMenu-item" id="menu-commentBarrage" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-message"></i><span class="menu-commentBarrage-text">关闭热评</span></a><a class="rightMenu-item" id="menu-darkmode" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span class="menu-darkmode-text">深色模式</span></a><a class="rightMenu-item" id="menu-translate" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-language"></i><span>轉為繁體</span></a></div></div><div id="rightmenu-mask"></div><div><script src="../../../../js/utils.js"></script><script src="../../../../js/main.js"></script><script src="../../../../js/tw_cn.js"></script><script src="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.umd.js"></script><script src="https://cdn.cbd.int/instant.page@5.2.0/instantpage.js" type="module"></script><script src="https://cdn.cbd.int/vanilla-lazyload@17.8.5/dist/lazyload.iife.min.js"></script><script src="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.js"></script><canvas id="universe"></canvas><script async src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/dark/dark.js"></script><script>// 消除控制台打印
+var HoldLog = console.log;
+console.log = function () {};
+let now1 = new Date();
+queueMicrotask(() => {
+  const Log = function () {
+    HoldLog.apply(console, arguments);
+  }; //在恢复前输出日志
+  const grt = new Date("04/01/2021 00:00:00"); //此处修改你的建站时间或者网站上线时间
+  now1.setTime(now1.getTime() + 250);
+  const days = (now1 - grt) / 1000 / 60 / 60 / 24;
+  const dnum = Math.floor(days);
+  const ascll = [
+    `欢迎使用安知鱼!`,
+    `生活明朗, 万物可爱`,
+    `
+        
+       █████╗ ███╗   ██╗███████╗██╗  ██╗██╗██╗   ██╗██╗   ██╗
+      ██╔══██╗████╗  ██║╚══███╔╝██║  ██║██║╚██╗ ██╔╝██║   ██║
+      ███████║██╔██╗ ██║  ███╔╝ ███████║██║ ╚████╔╝ ██║   ██║
+      ██╔══██║██║╚██╗██║ ███╔╝  ██╔══██║██║  ╚██╔╝  ██║   ██║
+      ██║  ██║██║ ╚████║███████╗██║  ██║██║   ██║   ╚██████╔╝
+      ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝   ╚═╝    ╚═════╝
+        
+        `,
+    "已上线",
+    dnum,
+    "天",
+    "©2020 By 安知鱼 V1.6.12",
+  ];
+  const ascll2 = [`NCC2-036`, `调用前置摄像头拍照成功，识别为【小笨蛋】.`, `Photo captured: `, `🤪`];
+
+  setTimeout(
+    Log.bind(
+      console,
+      `\n%c${ascll[0]} %c ${ascll[1]} %c ${ascll[2]} %c${ascll[3]}%c ${ascll[4]}%c ${ascll[5]}\n\n%c ${ascll[6]}\n`,
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      ""
+    )
+  );
+  setTimeout(
+    Log.bind(
+      console,
+      `%c ${ascll2[0]} %c ${ascll2[1]} %c \n${ascll2[2]} %c\n${ascll2[3]}\n`,
+      "color:white; background-color:#4fd953",
+      "",
+      "",
+      'background:url("https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/tinggge.gif") no-repeat;font-size:450%'
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c WELCOME %c 你好，小笨蛋.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(
+      console,
+      "%c ⚡ Powered by 安知鱼 %c 你正在访问 Logic 的博客.",
+      "color:white; background-color:#f0ad4e",
+      ""
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c W23-12 %c 你已打开控制台.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(console, "%c S013-782 %c 你现在正处于监控中.", "color:white; background-color:#d9534f", "")
+  );
+});</script><script async src="/anzhiyu/random.js"></script><div class="js-pjax"><input type="hidden" name="page-type" id="page-type" value="post"></div><script>var visitorMail = "";
+</script><script async data-pjax src="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/waterfall/waterfall.js"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/qrcodejs/1.0.0/qrcode.min.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.9/icon/ali_iconfont_css.css"><canvas class="fireworks" mobile="true"></canvas><script src="https://cdn.cbd.int/butterfly-extsrc@1.1.3/dist/fireworks.min.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.cbd.int/anzhiyu-blog-static@1.0.1/js/APlayer.min.js"></script><script src="https://cdn.cbd.int/hexo-anzhiyu-music@1.0.1/assets/js/Meting2.min.js"></script><script src="https://cdn.cbd.int/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+  // removeEventListener scroll 
+  anzhiyu.removeGlobalFnEvent('pjax')
+  anzhiyu.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script charset="UTF-8" src="https://cdn.cbd.int/anzhiyu-theme-static@1.1.5/accesskey/accesskey.js"></script></div><div id="popup-window"><div class="popup-window-title">通知</div><div class="popup-window-divider"></div><div class="popup-window-content"><div class="popup-tip">你好呀</div><div class="popup-link"><i class="anzhiyufont anzhiyu-icon-arrow-circle-right"></i></div></div></div></body></html>
